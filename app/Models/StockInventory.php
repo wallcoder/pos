@@ -25,4 +25,8 @@ class StockInventory extends Model
     public function orderItems(): HasMany{
         return $this->hasMany(OrderItem::class);
     }
+
+    public function cartItem(): HasMany{
+        return $this->hasMany(CartItem::class);
+    }
 }
