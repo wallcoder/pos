@@ -3,10 +3,6 @@
 ## Overview
 This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of the fulfillment of campus recruitment by Lailen Pvt Ltd. The project was built within a week using Filament and Laravel.
 
-## Features
-- User authentication and role-based access control
-- Product and inventory management
-- Stock and order management
 
 
 ## Technologies Used
