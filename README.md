@@ -50,5 +50,5 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 
 
 ## Contact
-For any inquiries, reach out at contact@biakadev or biakropuia4@gmail.com.
+For any inquiries, reach out at contact@biakadev.com or biakropuia4@gmail.com.
 
