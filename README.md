@@ -6,7 +6,7 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 ## Features
 - User authentication and role-based access control
 - Product and inventory management
-- Sales processing and order management
+- Stock and order management
 
 
 ## Technologies Used
