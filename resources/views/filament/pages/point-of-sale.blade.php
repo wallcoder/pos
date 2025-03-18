@@ -2,7 +2,7 @@
    <div class="w-full">
 
         <!-- Include the Livewire POS System -->
-        @livewire('pos')
+        @livewire('pos', ['user' => $user])
     </div>
        
     

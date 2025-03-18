@@ -25,8 +25,8 @@ class DiscountResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')->required(),
-                Forms\Components\Select::make('type')->options(['fixed', 'percentage'])->required(),
-                Forms\Components\TextInput::make('value')->numeric()->required(),
+                // Forms\Components\Select::make('type')->options(['fixed', 'percentage'])->required(),
+                Forms\Components\TextInput::make('value')->numeric()->label('Value(%)')->required(),
                 Forms\Components\DatePicker::make('expires_at')->required()->minDate(now()),
             ]);
     }
@@ -36,8 +36,8 @@ class DiscountResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('value'),
+                // Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('value')->label('Value(%)'),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('expires_at'),
             ])
