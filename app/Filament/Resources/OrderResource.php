@@ -28,16 +28,21 @@ class OrderResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.name'),
-                Tables\Columns\TextColumn::make('customer.phone'),
+                Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('discount.title'),
-                Tables\Columns\TextColumn::make('total_amount'),
-                Tables\Columns\TextColumn::make('final_amount'),
-                Tables\Columns\TextColumn::make('payment_method'),
+                Tables\Columns\TextColumn::make('discount.value')->label('Discount Amount(%)'),
+                Tables\Columns\TextColumn::make('total_amount')->label('Total Amount(₹)'),
+                Tables\Columns\TextColumn::make('final_amount')->label('Final Amount(₹)'),
+                Tables\Columns\TextColumn::make('payment_method')->label('Payment Method'),
             ])
             ->filters([
                 //
@@ -55,7 +60,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\OrderItemsRelationManager::class,
         ];
     }
 

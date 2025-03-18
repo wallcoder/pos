@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login()->darkMode(false)
             ->sidebarWidth('14rem')
             ->colors([
                 'primary' => Color::Emerald,

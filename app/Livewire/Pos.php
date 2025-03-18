@@ -8,9 +8,11 @@ use App\Models\StockInventory;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Livewire\WithPagination;
 class Pos extends Component
 {
+
+    use WithPagination;
     public $count = 1;
     public $query = '';
     public $cart = [];
@@ -19,16 +21,77 @@ class Pos extends Component
     public $discounts = [];
     public $discountValue = 0;
     
+    public $paymentMethod = 'Cash';
     public $finalPrice = 0;
     public $user;
+    public $name = '';
+    public $test = '';
+
+    public $customerPhone = '';
 
     public function mount($user)
     {
         $this->discounts = Discount::where('status', '=', 'active')->get();
         $this->user = $user; // Assign userId passed from Filament
         $this->updateTotalPrice(); // Set total price on component mount
+        $this->calculateFinalPrice();
+        
     }
 
+
+    public function addOrder($orderItems, $customerPhone='', $discountValue, $totalPrice, $finalPrice, $paymentMethod)
+    {
+        if (trim($customerPhone) === '') {
+            session()->flash('error', 'Customer phone number is required.');
+            return;
+        }
+    
+        DB::beginTransaction();
+        try {
+            // Insert the order
+            $order = \App\Models\Order::create([
+                'phone' => $customerPhone,
+                'discount_id' => $discountValue ? Discount::where('value', $discountValue)->value('id') : null,
+                'total_amount' => $totalPrice,
+                'final_amount' => $finalPrice,
+                'payment_method' => $paymentMethod,
+                'status' => 'paid',
+            ]);
+    
+            // Insert order items
+            foreach ($orderItems as $item) {
+                \App\Models\OrderItem::create([
+                    'order_id' => $order->id,
+                    'stock_inventory_id' => $item['stock_inventory_id'] ?? null,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'total_price' => $item['total_price'],
+                    'name' => $item['name'],
+                    'image' => $item['image'],
+                ]);
+            }
+    
+            // Clear the cart for the user
+            CartItem::where('user_id', $this->user->id)->delete();
+    
+            // Reset the variables
+            $this->customerPhone = '';
+            $this->discountValue = 0;
+            $this->totalPrice = 0;
+            $this->finalPrice = 0;
+            $this->paymentMethod = 'Cash';
+            $this->cart = [];
+    
+            DB::commit();
+    
+            session()->flash('success', 'Order placed successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Order creation failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to place order. Please try again.');
+        }
+    }
+    
     public function addToCart($productId, $inventoryId, $userId)
     {
         $product = Product::find($productId);
@@ -70,6 +133,7 @@ class Pos extends Component
 
             DB::commit();
             $this->updateTotalPrice(); // Update total price after adding item
+            $this->calculateFinalPrice();
         } catch (\Exception $e) {
             DB::rollBack();
             dd("Error adding to cart: " . $e->getMessage());
@@ -108,6 +172,7 @@ class Pos extends Component
 
             DB::commit();
             $this->updateTotalPrice(); // Update total price after removing item
+            $this->calculateFinalPrice();
         } catch (\Exception $e) {
             DB::rollBack();
             dd("Error removing from cart: " . $e->getMessage());
@@ -122,25 +187,26 @@ class Pos extends Component
 
     public function updatedDiscountValue($value)
 {
-    Log::info('Updated Discount Value: ' . $value);
+    // dd("Discount Updated: " . $value);
     $this->discountValue = (int) $value;
     $this->calculateFinalPrice();
 }
 
 public function calculateFinalPrice()
 {
-    $discountAmount = ($this->totalPrice * $this->discountValue) / 100;
-    $this->finalPrice = $this->totalPrice - $discountAmount;
-}
+    
+    
+    $this->finalPrice =$this->totalPrice - $this->totalPrice * ($this->discountValue/100);
+}   
 
 public function render()
 {
     return view('livewire.pos', [
         'products' => Product::with(['stockInventory.stock'])
-            ->where('name', 'like', '%' . $this->query . '%')
-            ->limit(10)
-            ->get(),
-        'user' => $this->user,
+            ->where('name', 'like', '%' . $this->query . '%')->orWhere('barcode', 'like', '%' . $this->query . '%')
+            ->paginate(10),
+            
+        'user' => $this->user, 
         'cartItems' => CartItem::where('user_id', '=', $this->user->id)->get(),
         // Default to total price if not set
     ]);
