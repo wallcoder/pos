@@ -32,8 +32,8 @@ class Pos extends Component
     public function mount($user)
     {
         $this->discounts = Discount::where('status', '=', 'active')->get();
-        $this->user = $user; // Assign userId passed from Filament
-        $this->updateTotalPrice(); // Set total price on component mount
+        $this->user = $user; 
+        $this->updateTotalPrice(); 
         $this->calculateFinalPrice();
         
     }
@@ -48,7 +48,7 @@ class Pos extends Component
     
         DB::beginTransaction();
         try {
-            // Insert the order
+           
             $order = \App\Models\Order::create([
                 'phone' => $customerPhone,
                 'discount_id' => $discountValue ? Discount::where('value', $discountValue)->value('id') : null,
@@ -58,7 +58,7 @@ class Pos extends Component
                 'status' => 'paid',
             ]);
     
-            // Insert order items
+          
             foreach ($orderItems as $item) {
                 \App\Models\OrderItem::create([
                     'order_id' => $order->id,
@@ -71,10 +71,10 @@ class Pos extends Component
                 ]);
             }
     
-            // Clear the cart for the user
+            
             CartItem::where('user_id', $this->user->id)->delete();
     
-            // Reset the variables
+           
             $this->customerPhone = '';
             $this->discountValue = 0;
             $this->totalPrice = 0;
@@ -171,7 +171,7 @@ class Pos extends Component
             }
 
             DB::commit();
-            $this->updateTotalPrice(); // Update total price after removing item
+            $this->updateTotalPrice(); 
             $this->calculateFinalPrice();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -187,7 +187,7 @@ class Pos extends Component
 
     public function updatedDiscountValue($value)
 {
-    // dd("Discount Updated: " . $value);
+   
     $this->discountValue = (int) $value;
     $this->calculateFinalPrice();
 }
@@ -208,7 +208,7 @@ public function render()
             
         'user' => $this->user, 
         'cartItems' => CartItem::where('user_id', '=', $this->user->id)->get(),
-        // Default to total price if not set
+        
     ]);
 }
 }
