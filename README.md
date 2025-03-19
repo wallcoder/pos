@@ -20,7 +20,7 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 1. Clone the repository:
    ```sh
    git clone https://github.com/wallcoder/pos.git
-   cd pos-system
+   cd pos
    ```
 2. Install dependencies:
    ```sh
