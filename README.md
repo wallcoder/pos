@@ -44,6 +44,9 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
    php artisan serve
    ```
 
+   ##Note
+   If the images are not showing, you may change APP_URL in .env file to http://127.0.0.1:8000
+
 
 
 
