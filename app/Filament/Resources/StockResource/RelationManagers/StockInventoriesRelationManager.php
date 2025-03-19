@@ -9,6 +9,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class StockInventoriesRelationManager extends RelationManager
 {
@@ -61,6 +64,21 @@ class StockInventoriesRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+
+                ExportBulkAction::make()->exports([
+                    ExcelExport::make()
+                        ->withFilename('StockInventory' . '-' . date('Y-m-d'))
+                        ->withWriterType(\Maatwebsite\Excel\Excel::CSV)
+                        ->withColumns([
+                            Column::make('quantity')->heading('Product'),
+                            Column::make('product.barcode')->heading('Barcode'),
+                            Column::make('stock.name')->heading('Stock'),
+                            Column::make('stock.batch_code')->heading('Batch Code'),
+                        
+                           
+                        ])
+                ])
+                
             ]);
     }
 }

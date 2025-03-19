@@ -12,7 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 class OrderResource extends Resource
 {
     
@@ -43,6 +45,7 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('total_amount')->label('Total Amount(₹)'),
                 Tables\Columns\TextColumn::make('final_amount')->label('Final Amount(₹)'),
                 Tables\Columns\TextColumn::make('payment_method')->label('Payment Method'),
+                Tables\Columns\TextColumn::make('created_at')->label('Created At'),
             ])
             ->filters([
                 //
@@ -54,6 +57,22 @@ class OrderResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+
+                ExportBulkAction::make()->exports([
+                    ExcelExport::make()
+                        ->withFilename(fn ($resource) => $resource::getModelLabel() . '-' . date('Y-m-d'))
+                        ->withWriterType(\Maatwebsite\Excel\Excel::CSV)
+                        ->withColumns([
+                            Column::make('phone')->heading('Customer Contact'),
+                            Column::make('discount.title')->heading('Discount Name'),
+                            Column::make('discount.value')->heading('Discount Percentage'),
+                            Column::make('total_amount')->heading('Total Amount'),
+                            Column::make('final_amount')->heading('Final Amount'),
+                            Column::make('payment_method')->heading('Payment Method'),
+                            Column::make('created_at')->heading('Created At')
+                           
+                        ])
+                ])
             ]);
     }
 
