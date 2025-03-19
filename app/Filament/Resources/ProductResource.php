@@ -37,8 +37,8 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('barcode'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('barcode')->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
             ])
             ->filters([

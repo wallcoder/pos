@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\StockInventory;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\DB;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Log;
 use Livewire\WithPagination;
 class Pos extends Component
@@ -42,9 +43,11 @@ class Pos extends Component
     public function addOrder($orderItems, $customerPhone='', $discountValue, $totalPrice, $finalPrice, $paymentMethod)
     {
         if (trim($customerPhone) === '') {
-            session()->flash('error', 'Customer phone number is required.');
+            dd("Customer Phone is required");
             return;
         }
+
+        // dd($discountValue);
     
         DB::beginTransaction();
         try {
@@ -57,6 +60,8 @@ class Pos extends Component
                 'payment_method' => $paymentMethod,
                 'status' => 'paid',
             ]);
+
+           
     
           
             foreach ($orderItems as $item) {
@@ -84,11 +89,10 @@ class Pos extends Component
     
             DB::commit();
     
-            session()->flash('success', 'Order placed successfully.');
+            redirect( url('/admin/orders'));
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Order creation failed: ' . $e->getMessage());
-            session()->flash('error', 'Failed to place order. Please try again.');
+           dd($e);
         }
     }
     

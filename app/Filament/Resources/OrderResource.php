@@ -39,12 +39,12 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('phone'),
-                Tables\Columns\TextColumn::make('discount.title'),
+                Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('discount.title')->searchable(),
                 Tables\Columns\TextColumn::make('discount.value')->label('Discount Amount(%)'),
                 Tables\Columns\TextColumn::make('total_amount')->label('Total Amount(₹)'),
                 Tables\Columns\TextColumn::make('final_amount')->label('Final Amount(₹)'),
-                Tables\Columns\TextColumn::make('payment_method')->label('Payment Method'),
+                Tables\Columns\TextColumn::make('payment_method')->label('Payment Method')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At'),
             ])
             ->filters([
