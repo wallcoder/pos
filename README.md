@@ -50,6 +50,7 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
    ```sh
    php artisan serve
    ```
+   
 ## Login Credentials(After seed)
     Email:admin@admin.com 
     Password: password
