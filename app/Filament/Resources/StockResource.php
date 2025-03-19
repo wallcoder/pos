@@ -34,8 +34,8 @@ class StockResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('batch_code'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('batch_code')->searchable(),
                 Tables\Columns\TextColumn::make('created_at'),
                 Tables\Columns\TextColumn::make('modified_at')
             ])

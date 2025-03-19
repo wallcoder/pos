@@ -35,10 +35,10 @@ class DiscountResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('title')->searchable(),
                 // Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('value')->label('Value(%)'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')->searchable(),
                 Tables\Columns\TextColumn::make('expires_at'),
             ])
             ->filters([
