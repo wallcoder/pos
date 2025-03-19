@@ -11,7 +11,7 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 
 ## Features
 - Product & Inventory Management
-- Point of Scale Interface
+- Point of Sale Interface
 - Secure Login and Authentication
 - Sales tracking and reports
 - Search Functionality
