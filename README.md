@@ -9,6 +9,13 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 - **Laravel** - Backend framework
 - **Filament** - Admin panel and UI components
 
+## Features
+- Product & Inventory Management
+- Point of Scale Interface
+- Secure Login and Authentication
+- Sales tracking and reports
+- Search Functionality
+
 
 ## Installation
 ### Prerequisites:
