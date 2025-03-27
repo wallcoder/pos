@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Filament\Resources;
-
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\URL;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
@@ -41,17 +42,29 @@ class OrderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('discount.title')->searchable(),
-                Tables\Columns\TextColumn::make('discount.value')->label('Discount Amount(%)'),
-                Tables\Columns\TextColumn::make('total_amount')->label('Total Amount(₹)'),
-                Tables\Columns\TextColumn::make('final_amount')->label('Final Amount(₹)'),
+                Tables\Columns\TextColumn::make('discount.value')->label('Discount Amount(%)')->sortable(),
+                Tables\Columns\TextColumn::make('total_amount')->label('Total Amount(₹)')->sortable(),
+                Tables\Columns\TextColumn::make('final_amount')->label('Final Amount(₹)')->sortable(),
                 Tables\Columns\TextColumn::make('payment_method')->label('Payment Method')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->label('Created At'),
+                Tables\Columns\TextColumn::make('created_at')->label('Created At')->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
+                Action::make('view_invoice')
+                ->label('Invoice')
+                ->icon('')
+                ->url(fn (Order $record) => URL::to("/admin/invoices/{$record->id}"))
+                ->openUrlInNewTab(),
+
+            // Download Invoice Action
+            // Action::make('download_invoice')
+            //     ->label('Download')
+            //     ->icon('')
+            //     ->url(fn (Order $record) => URL::to("/admin/invoices/{$record->id}/download")),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

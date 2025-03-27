@@ -89,7 +89,7 @@ class Pos extends Component
     
             DB::commit();
     
-            redirect( url('/admin/orders'));
+            redirect("/admin/invoices/{$order->id}");
         } catch (\Exception $e) {
             DB::rollBack();
            dd($e);
