@@ -5,8 +5,8 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 
 ## Live Demo
 https://pos.biakadev.com
-    Email:admin@admin.com 
-    Password: password
+- Email:admin@admin.com 
+- Password: password
 
 ## Technologies Used
 - **Laravel** - Backend framework
