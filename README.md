@@ -14,6 +14,7 @@ This is a simple Point of Sale (POS) system created by Biakropuia MZU as part of
 - Point of Sale Interface
 - Secure Login and Authentication
 - Sales tracking and reports
+- Invoice 
 - Search Functionality
 
 
