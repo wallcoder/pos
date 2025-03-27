@@ -4,14 +4,16 @@
     <div class="w-full xl:w-1/2  space-y-1">
        <div class="flex gap-2">
        
-        <input type="search" wire:model="query" class="flex-1 p-2 rounded-lg border" placeholder="Search Name or Barcode">
+        <input type="search" wire:model.live="query" class="flex-1 p-2 rounded-lg border" placeholder="Search Name or Barcode">
        
        </div>
-       {{-- Hi! My name is <span wire:poll.500ms>{{ $name }}</span>
+       {{-- Hi! My name is <span >{{ $name }}</span>
 
-       <span wire:poll.500ms>{{ $customerPhone}}</span>
-       <span wire:poll.500ms>{{ $discountValue}}</span>
-       <span wire:poll.500ms>{{ $paymentMethod}}</span> --}}
+       <span >{{ $customerPhone}}</span>
+       <span >{{ $discountValue}}</span>
+       <span >{{ $paymentMethod}}</span> --}}
+    @if (count($products)>0)
+        
     
     <div class="mt-4 list">
         @foreach ($products as $product)
@@ -33,7 +35,11 @@
                 </div>
             </div>
         @endforeach
+        
     </div>
+    @else
+    <p class="text-gray-500 text-center">No Product available.</p>
+    @endif
 
  
     <div class="mt-4">
@@ -74,11 +80,11 @@
     <div class="bg-gray-100 rounded-lg shadow p-2 flex flex-col space-y-2">
         <div class="flex flex-col bg-white">
             <div class="flex justify-between p-2"><span>Total Price</span><span>₹{{ $totalPrice }}</span></div>
-            <div class="flex justify-between p-2"><span>Discount</span><span wire:poll.500ms>{{ $discountValue }}%</span></div>
-            <div class="flex justify-between p-2"><span>Final Price</span> <span wire:poll.500ms>₹{{ $finalPrice }}</span></div>
+            <div class="flex justify-between p-2"><span>Discount</span><span >{{ $discountValue }}%</span></div>
+            <div class="flex justify-between p-2"><span>Final Price</span> <span >₹{{ $finalPrice }}</span></div>
         </div>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model="discountValue" class="p-2 border rounded-lg">
+            <select wire:model.live="discountValue" class="p-2 border rounded-lg">
                 <option value="0">No Discount</option>
                 @if ($discounts->isNotEmpty())
                     @foreach ($discounts as $d)
@@ -86,12 +92,12 @@
                     @endforeach
                 @endif
             </select>
-            <select name="discount" id="discount" class="p-2 border rounded-lg w-20" wire:model="paymentMethod" wire:poll.500ms>
+            <select name="discount" id="discount" class="p-2 border rounded-lg w-20" wire:model.live="paymentMethod" >
                 <option value="Cash" selected>Cash</option>
                 <option value="UPI">UPI</option>
                 <option value="Card">Card</option>
             </select>
-            <input type="number" class="p-2 rounded-lg border phone" placeholder="Customer Phone" wire:model="customerPhone" wire:poll.500ms>
+            <input type="number" class="p-2 rounded-lg border phone" placeholder="Customer Phone" wire:model.live="customerPhone" >
             <button wire:click="addOrder({{ $cartItems }}, '{{ $customerPhone }}', {{ $discountValue }}, {{ $totalPrice }}, {{ $finalPrice }}, '{{ $paymentMethod }}')" class="px-2 py-2 button font-semibold rounded-lg shadow bg-white">
                 Confirm
             </button>
